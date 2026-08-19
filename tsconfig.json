@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -30,5 +30,8 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  // `checks/` is a standalone Node harness run via --experimental-strip-types,
+  // which requires explicit .ts import extensions that the app's module
+  // resolution rejects. It is verified by `npm run check`, not by the build.
+  "exclude": ["node_modules", "checks"]
 }

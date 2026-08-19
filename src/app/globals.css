@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Ceylo design tokens — the single source for all three surfaces
+   (partner dashboard · partner onboarding · Ceylo admin console)
+   ========================================================================== */
+
+:root {
+  /* Surfaces */
+  --cream: #faf7f0;
+  --cream-deep: #f2ede1;
+  --paper: #ffffff;
+  --sand: #e8e0cd;
+  --sand-soft: #f4efe2;
+
+  /* Ink */
+  --ink: #14140f;
+  --ink-soft: #3d3d33;
+  --ink-mute: #6f6f61;
+  --ink-faint: #a3a394;
+  --line: #e2dccb;
+  --line-soft: #ece7d9;
+
+  /* Brand */
+  --lime: #c8f04a;
+  --lime-deep: #a8d024;
+  --lime-tint: #eefac4;
+
+  /* Vertical accents */
+  --coral: #ff6b53;
+  --coral-tint: #ffe2dc;
+  --violet: #7c5cff;
+  --violet-tint: #e7e1ff;
+  --sky: #34a9e0;
+  --sky-tint: #d6eefb;
+
+  /* Semantic */
+  --peach: #ffb26b;
+  --peach-tint: #ffeeda;
+  --danger: #d93a2b;
+  --danger-tint: #ffe0dc;
+  --ok: #2f8f5b;
+  --ok-tint: #d9f2e4;
+
+  --radius-tile: 18px;
+  --radius-chip: 999px;
+
+  --shadow-tile: 0 1px 2px rgb(20 20 15 / 0.04), 0 8px 24px -12px rgb(20 20 15 / 0.12);
+  --shadow-pop: 0 12px 40px -12px rgb(20 20 15 / 0.28);
+
+  --font-display: var(--font-bricolage), var(--font-geist-sans), system-ui, sans-serif;
+  --font-body: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Script-aware font swap. Sinhala and Tamil need their own faces; the
+   `lang` attribute is set on <html> by the locale store. */
+html[lang|="si"] {
+  --font-body: var(--font-noto-sinhala), "Iskoola Pota", "Nirmala UI", system-ui, sans-serif;
+  --font-display: var(--font-noto-sinhala), "Iskoola Pota", "Nirmala UI", system-ui, sans-serif;
+}
+
+html[lang|="ta"] {
+  --font-body: var(--font-noto-tamil), "Nirmala UI", "Latha", system-ui, sans-serif;
+  --font-display: var(--font-noto-tamil), "Nirmala UI", "Latha", system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-paper: var(--paper);
+  --color-sand: var(--sand);
+  --color-sand-soft: var(--sand-soft);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+
+  --color-lime: var(--lime);
+  --color-lime-deep: var(--lime-deep);
+  --color-lime-tint: var(--lime-tint);
+
+  --color-coral: var(--coral);
+  --color-coral-tint: var(--coral-tint);
+  --color-violet: var(--violet);
+  --color-violet-tint: var(--violet-tint);
+  --color-sky: var(--sky);
+  --color-sky-tint: var(--sky-tint);
+
+  --color-peach: var(--peach);
+  --color-peach-tint: var(--peach-tint);
+  --color-danger: var(--danger);
+  --color-danger-tint: var(--danger-tint);
+  --color-ok: var(--ok);
+  --color-ok-tint: var(--ok-tint);
+
+  --radius-tile: var(--radius-tile);
+  --radius-chip: var(--radius-chip);
+
+  --shadow-tile: var(--shadow-tile);
+  --shadow-pop: var(--shadow-pop);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- motion */
+
+@keyframes ceylo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ceylo-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ceylo-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ceylo-shimmer {
+  from {
+    background-position: -320px 0;
+  }
+  to {
+    background-position: 320px 0;
+  }
+}
+
+.anim-rise {
+  animation: ceylo-rise 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-fade {
+  animation: ceylo-fade 200ms ease-out both;
+}
+.anim-pop {
+  animation: ceylo-pop 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-delay-1 {
+  animation-delay: 60ms;
+}
+.anim-delay-2 {
+  animation-delay: 120ms;
+}
+.anim-delay-3 {
+  animation-delay: 180ms;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--sand-soft) 25%, var(--cream-deep) 37%, var(--sand-soft) 63%);
+  background-size: 640px 100%;
+  animation: ceylo-shimmer 1.3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ------------------------------------------------------------- a11y bits */
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.focus-ring-lime:focus-visible {
+  outline-color: var(--lime-deep);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 8px;
+  top: 8px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: 8px 14px;
+  border-radius: var(--radius-chip);
+}
+
+/* Dense admin surface: staff work at desks, in tables, all day. */
+.admin-dense {
+  font-size: 13px;
+  line-height: 1.45;
+}
+.admin-dense table {
+  font-size: 12.5px;
+}
+
+/* Thin scrollbars inside split panes */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sand) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--sand);
+  border-radius: 999px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
