@@ -11,7 +11,7 @@
  * Pass the code as OTP=... — it is a live credential and is not committed.
  */
 
-const BASE = process.env.BASE ?? "http://localhost:3001/cylo-api";
+const BASE = process.env.BASE ?? "https://ceylo-backend.onrender.com/api/v1";
 const PHONE = process.env.PHONE ?? "+919876543210";
 const OTP = process.env.OTP ?? "";
 
