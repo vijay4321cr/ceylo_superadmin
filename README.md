@@ -70,9 +70,14 @@ backend is rather than a demo that looks finished.
 One sign-in, one token. The token that authenticates API calls is the same token that opens the
 console — there is no separate demo persona any more.
 
-- Requests go to `/cylo-api/*`, which `next.config.ts` rewrites to `CYLO_API_ORIGIN`. Same-origin,
-  so the backend needs no CORS entry and the bearer token never crosses an origin. Set
-  `NEXT_PUBLIC_API_BASE_URL` to skip the proxy. See `.env.example`.
+- Requests go to `/cylo-api/*` on this app's own origin, and the route handler at
+  `src/app/cylo-api/[...path]/route.ts` forwards them to `CYLO_API_ORIGIN`. Same-origin, so the
+  backend needs no CORS entry and the bearer token never crosses an origin boundary. Seeing the
+  app's own host in devtools is expected — the upstream call happens server-side.
+  Set `NEXT_PUBLIC_API_BASE_URL` to skip the proxy and call the API directly (CORS then required).
+  See `.env.example`.
+  This was a `rewrites()` entry originally; it worked under `next dev` and `next start` but 404'd
+  once deployed, so the proxy is now application code that ships with the app on any host.
 - **Access tokens live 15 minutes.** The service refreshes an expired one via `POST /auth/refresh`
   and retries once, so a review session does not die mid-queue.
 - **OTP resend is rate-limited to 30s**; the backend's own message is surfaced.
