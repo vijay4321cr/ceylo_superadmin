@@ -11,13 +11,22 @@
  * callers the payload directly.
  */
 
-/** Same-origin by default — see the `/cylo-api` rewrite in next.config.ts.
- *  Set NEXT_PUBLIC_API_BASE_URL to call a deployed backend directly instead. */
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "/cylo-api";
+/**
+ * The Ceylo backend. Fixed on purpose.
+ *
+ * The browser calls this URL directly, from every environment — local, Vercel,
+ * anywhere. There is no proxy, no environment variable and no per-host
+ * behaviour, so what you see in devtools is exactly what the app requests and
+ * a bug reproduces the same way everywhere.
+ *
+ * This works because the backend sends CORS headers for the calling origin and
+ * allows the Authorization header. If it ever stops doing so, browser calls
+ * fail everywhere at once rather than only in one environment.
+ */
+export const API_BASE = "https://ceylo-backend.onrender.com/api/v1";
 
-/** What the operator sees in the connection bar. */
-export const API_ORIGIN_LABEL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "ceylo-backend.onrender.com (via /cylo-api proxy)";
+/** Shown in the UI so the operator always knows which backend they are on. */
+export const API_ORIGIN_LABEL = API_BASE;
 
 export class ApiError extends Error {
   status: number;
@@ -112,7 +121,7 @@ function messageFrom(body: unknown, status: number): string {
   if (status >= 500) {
     return (
       `The backend returned ${status} and no detail. ` +
-      `If it is not running at ${API_ORIGIN_LABEL}, start it or set CYLO_API_ORIGIN to where it lives.`
+      `The backend at ${API_ORIGIN_LABEL} may be down or restarting — try again shortly.`
     );
   }
   return `Request failed with status ${status}.`;
@@ -121,10 +130,8 @@ function messageFrom(body: unknown, status: number): string {
 export async function request<T = unknown>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = "GET", body, token, query, timeoutMs = 15000, signal } = options;
 
-  const url = new URL(
-    `${API_BASE}${path}`,
-    typeof window === "undefined" ? "http://localhost" : window.location.origin,
-  );
+  // API_BASE is absolute, so no relative-resolution base is needed.
+  const url = new URL(`${API_BASE}${path}`);
   for (const [key, value] of Object.entries(query ?? {})) {
     if (value !== undefined && value !== "") url.searchParams.set(key, String(value));
   }

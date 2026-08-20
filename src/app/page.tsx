@@ -46,9 +46,9 @@ export default function Home() {
         </div>
 
         <p className="mt-6 text-xs leading-relaxed text-ink-mute">
-          The console signs in against the live Ceylo backend with a phone number that holds an
-          admin role. No backend to hand? Run <code className="font-mono">npm run api:stub</code> and
-          point <code className="font-mono">CYLO_API_ORIGIN</code> at it.
+          The console signs in against the Ceylo backend with a phone number that holds an admin
+          role. Every environment calls the same API —{" "}
+          <code className="font-mono">ceylo-backend.onrender.com/api/v1</code>.
         </p>
       </div>
     </div>

@@ -15,8 +15,7 @@ npm run dev        # http://localhost:3000
 npm run build
 npm run lint
 npm run check      # offline unit checks (see checks/)
-npm run api:smoke  # read-only end-to-end check against the live backend
-npm run api:stub   # optional local stand-in backend on :3002
+npm run api:smoke  # read-only end-to-end check (OTP=<code> npm run api:smoke)
 ```
 
 ---
@@ -43,7 +42,7 @@ promoting an account does nothing for a token you already hold.
 
 ## What is actually connected
 
-The backend is `https://ceylo-backend.onrender.com/api/v1` (override with `CYLO_API_ORIGIN`).
+The backend is `https://ceylo-backend.onrender.com/api/v1`, fixed in code for every environment.
 Four screens are live; the rest of the information architecture is present but unbuilt.
 
 | Screen | Endpoint |
@@ -70,14 +69,12 @@ backend is rather than a demo that looks finished.
 One sign-in, one token. The token that authenticates API calls is the same token that opens the
 console — there is no separate demo persona any more.
 
-- Requests go to `/cylo-api/*` on this app's own origin, and the route handler at
-  `src/app/cylo-api/[...path]/route.ts` forwards them to `CYLO_API_ORIGIN`. Same-origin, so the
-  backend needs no CORS entry and the bearer token never crosses an origin boundary. Seeing the
-  app's own host in devtools is expected — the upstream call happens server-side.
-  Set `NEXT_PUBLIC_API_BASE_URL` to skip the proxy and call the API directly (CORS then required).
-  See `.env.example`.
-  This was a `rewrites()` entry originally; it worked under `next dev` and `next start` but 404'd
-  once deployed, so the proxy is now application code that ships with the app on any host.
+- **The API base URL is fixed** in `src/lib/api/client.ts`:
+  `https://ceylo-backend.onrender.com/api/v1`. The browser calls it directly from every
+  environment — local, Vercel, anywhere. There is no proxy, no environment variable and no
+  per-host behaviour, so devtools shows exactly what the app requests and a bug reproduces
+  identically everywhere. This relies on the backend sending CORS headers for the calling origin
+  and allowing `Authorization`, which it does.
 - **Access tokens live 15 minutes.** The service refreshes an expired one via `POST /auth/refresh`
   and retries once, so a review session does not die mid-queue.
 - **OTP resend is rate-limited to 30s**; the backend's own message is surfaced.
@@ -136,7 +133,7 @@ Live rows carry `kycStatus`, a nested `kyc` object and a `restaurant` block (nam
   outstanding decision.
 - **Approve and reject have not been fired against the deployed backend** — doing so changes real
   partner records. They share the client and envelope handling of the reads, which are verified.
-  Exercise them from the UI, or against `npm run api:stub` first.
+  Exercise them from the UI when you are ready.
 - **Partner onboarding cannot submit.** It needs `POST /partner/register`, `POST /partner/restaurant`
   and `POST /partner/kyc/submit`. The wizard captures and persists the draft; the review screen says
   plainly that nothing was sent.

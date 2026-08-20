@@ -4,8 +4,7 @@
  * Exercises exactly what the tab does, in order: OTP sign-in, token, then the
  * admin KYC queue. Read-only — it never approves or rejects anything.
  *
- *   node checks/live-smoke.mjs                  # through the app proxy on :3001
- *   BASE=https://ceylo-backend.onrender.com/api/v1 node checks/live-smoke.mjs
+ *   OTP=<code> node checks/live-smoke.mjs
  *
  * The backend enforces a 30s OTP resend cooldown, so the send step retries.
  * Pass the code as OTP=... — it is a live credential and is not committed.
