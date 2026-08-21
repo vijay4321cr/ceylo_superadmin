@@ -9,6 +9,7 @@ import { API_ORIGIN_LABEL, errorText } from "@/lib/api/client";
 import { landingFor } from "@/lib/staffRbac";
 import { Button } from "@/components/ui/Button";
 import { Input, Select } from "@/components/ui/Field";
+import { PhoneField, DEFAULT_COUNTRY, isCompletePhone, splitPhone } from "@/components/ui/PhoneField";
 import { Modal } from "@/components/ui/Modal";
 import { toast } from "@/components/ui/Toast";
 
@@ -34,7 +35,7 @@ function StaffLogin() {
   const setSession = useStaffAuthStore((s) => s.setSession);
 
   const [stage, setStage] = useState<"phone" | "otp">("phone");
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(DEFAULT_COUNTRY.dial);
   const [sessionId, setSessionId] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
@@ -42,8 +43,13 @@ function StaffLogin() {
   const [bootstrapping, setBootstrapping] = useState(false);
 
   async function handleSend() {
-    if (!phone.trim()) {
-      setError("Enter the phone number registered as an admin.");
+    if (!isCompletePhone(phone)) {
+      const { country, national } = splitPhone(phone);
+      setError(
+        national.length === 0
+          ? "Enter the phone number registered as an admin."
+          : `That is not a complete ${country.name} number — ${country.dial} needs ${country.lengths.join(" or ")} digits.`,
+      );
       return;
     }
     setBusy(true);
@@ -120,15 +126,12 @@ function StaffLogin() {
 
           <div className="mt-4 flex flex-col gap-4">
             {stage === "phone" ? (
-              <Input
-                label="Phone number"
-                type="tel"
+              <PhoneField
                 required
-                autoComplete="tel"
-                placeholder="+91 98765 43210"
+                autoFocus
                 value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
+                onChange={(next) => {
+                  setPhone(next);
                   setError("");
                 }}
                 error={error}
@@ -203,7 +206,7 @@ function StaffLogin() {
 }
 
 function BootstrapModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(DEFAULT_COUNTRY.dial);
   const [secret, setSecret] = useState("");
   const [role, setRole] = useState("super_admin");
   const [error, setError] = useState("");
@@ -224,8 +227,12 @@ function BootstrapModal({ open, onClose }: { open: boolean; onClose: () => void 
             size="sm"
             loading={busy}
             onClick={async () => {
-              if (!phone.trim() || !secret.trim()) {
-                setError("Both the phone and the bootstrap secret are required.");
+              if (!isCompletePhone(phone) || !secret.trim()) {
+                setError(
+                  !isCompletePhone(phone)
+                    ? "Enter a complete phone number for the account to promote."
+                    : "The bootstrap secret is required.",
+                );
                 return;
               }
               setBusy(true);
@@ -247,13 +254,12 @@ function BootstrapModal({ open, onClose }: { open: boolean; onClose: () => void 
       }
     >
       <div className="flex flex-col gap-4">
-        <Input
+        <PhoneField
           label="Phone to promote"
           required
-          placeholder="+91 98765 43210"
           value={phone}
-          onChange={(e) => {
-            setPhone(e.target.value);
+          onChange={(next) => {
+            setPhone(next);
             setError("");
           }}
         />

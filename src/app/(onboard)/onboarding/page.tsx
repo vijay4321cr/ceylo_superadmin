@@ -1,51 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { ArrowRight, Check, Utensils, Ship, PartyPopper } from "lucide-react";
-import { useLocaleStore } from "@/lib/stores/localeStore";
-import { useOnboardingStore } from "@/lib/stores/onboardingStore";
+import Link from "next/link";
+import { Construction, Plug, Ship, PartyPopper, Utensils } from "lucide-react";
 import { useT } from "@/lib/i18n/useT";
-import { LOCALES } from "@/lib/i18n/config";
-import { completionOf, firstIncompleteStep } from "@/lib/onboardingSteps";
-import { resumeHref } from "@/lib/services/onboardingService";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
-import type { Locale } from "@/lib/types";
 
 /**
- * The language gate. It comes before anything else, because the person filling
- * this in may not read English — that is the whole point of the surface.
+ * Partner onboarding is not connected.
+ *
+ * The wizard behind this screen is built and working — it captures a full
+ * application and persists it — but the Ceylo backend has no partner
+ * application endpoints, so there is nowhere to send one. Rather than walk an
+ * applicant through twenty minutes of forms that end in nothing, the entry
+ * point says so up front.
+ *
+ * The wizard routes are still in the codebase and still reachable directly
+ * (/onboarding/signup and onwards). When the endpoints below exist, wire
+ * `submitApplication` in lib/services/onboardingService.ts and restore the
+ * start button here.
  */
-export default function OnboardingStartPage() {
-  const router = useRouter();
+export default function OnboardingComingSoonPage() {
   const { t } = useT();
-  const locale = useLocaleStore((s) => s.locale);
-  const chosen = useLocaleStore((s) => s.chosen);
-  const localeHydrated = useLocaleStore((s) => s.hydrated);
-
-  const draft = useOnboardingStore((s) => s.draft);
-  const hydrated = useOnboardingStore((s) => s.hydrated);
-
-  // Only skip the gate once the applicant has actively picked a language.
-  const [showGate, setShowGate] = useState(!chosen);
-
-  if (!hydrated || !localeHydrated) {
-    return (
-      <div className="mx-auto max-w-2xl px-4 py-16">
-        <div className="skeleton h-10 w-2/3 rounded-tile" />
-        <div className="skeleton mt-4 h-40 w-full rounded-tile" />
-      </div>
-    );
-  }
-
-  if (showGate && !chosen) {
-    return <LanguageGate onDone={() => setShowGate(false)} />;
-  }
-
-  const started = !!draft.account.businessName || draft.verticals.length > 0;
-  const pct = completionOf(draft);
-  const next = firstIncompleteStep(draft);
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:py-14">
@@ -62,93 +37,52 @@ export default function OnboardingStartPage() {
         <VerticalCard icon={<PartyPopper className="size-5" />} label={t("verticals.event")} tint="violet" />
       </div>
 
-      <ul className="anim-rise anim-delay-2 mt-7 flex flex-col gap-2.5">
-        {[t("start.point1"), t("start.point2"), t("start.point3")].map((point) => (
-          <li key={point} className="flex items-start gap-2.5 text-sm text-ink-soft">
-            <Check className="mt-0.5 size-4 shrink-0 text-lime-deep" aria-hidden />
-            {point}
-          </li>
-        ))}
-      </ul>
+      <section className="anim-rise anim-delay-2 mt-8 rounded-tile border border-line bg-paper p-6 shadow-tile">
+        <span className="inline-flex size-10 items-center justify-center rounded-full bg-peach-tint">
+          <Construction className="size-5 text-peach" aria-hidden />
+        </span>
 
-      <div className="anim-rise anim-delay-3 mt-8 flex flex-col gap-3">
-        {started ? (
-          <>
-            <Button
-              size="lg"
-              full
-              onClick={() => router.push(resumeHref(draft))}
-              icon={<ArrowRight className="size-4" />}
-            >
-              {t("start.resume")}
-            </Button>
-            <p className="text-center text-xs text-ink-mute">
-              {t("start.resumeHint", { pct, step: t(next.labelKey) })}
-            </p>
-          </>
-        ) : (
-          <Button size="lg" full href="/onboarding/signup" icon={<ArrowRight className="size-4" />}>
-            {t("start.begin")}
-          </Button>
-        )}
+        <h2 className="mt-3 font-display text-lg font-semibold text-ink">
+          Applications are not open yet
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+          We are still connecting partner sign-up to our systems. You cannot submit an application
+          today, and we would rather tell you that than have you fill in twenty minutes of forms
+          that go nowhere.
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-ink-mute">
+          Call us on +94 11 234 5678 or email partners@ceylo.lk and we will take your details and
+          come back to you as soon as this opens.
+        </p>
 
-        <button
-          type="button"
-          onClick={() => setShowGate(true)}
-          className="text-center text-xs text-ink-mute underline underline-offset-2 hover:text-ink"
-        >
-          {LOCALES.find((l) => l.code === locale)?.native} · {t("lang.title")}
-        </button>
-      </div>
-    </div>
-  );
-}
+        <div className="mt-5 rounded-tile border border-line bg-sand-soft/60 p-3">
+          <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-mute">
+            <Plug className="size-3" aria-hidden />
+            Needs from the API
+          </p>
+          <ul className="mt-2 flex flex-col gap-1">
+            {["POST /partner/register", "POST /partner/restaurant", "POST /partner/kyc/submit"].map(
+              (e) => (
+                <li key={e} className="font-mono text-[11px] text-ink-soft">
+                  {e}
+                </li>
+              ),
+            )}
+          </ul>
+          <p className="mt-2.5 text-[11px] leading-relaxed text-ink-mute">
+            The wizard itself is built and waiting — language gate, business identity, the Sri Lanka
+            document matrix, bank verification, per-vertical setup, commercials and e-sign. Only the
+            submit step is missing.
+          </p>
+        </div>
+      </section>
 
-function LanguageGate({ onDone }: { onDone: () => void }) {
-  const locale = useLocaleStore((s) => s.locale);
-  const setLocale = useLocaleStore((s) => s.setLocale);
-  const { t } = useT();
-  const [picked, setPicked] = useState<Locale>(locale);
-
-  return (
-    <div className="mx-auto max-w-md px-4 py-14">
-      <div className="anim-rise text-center">
-        <p className="font-display text-2xl font-semibold tracking-tight">Ceylo</p>
-        <h1 className="mt-6 font-display text-xl font-semibold text-ink">{t("lang.title")}</h1>
-        <p className="mt-1.5 text-sm text-ink-mute">{t("lang.subtitle")}</p>
-      </div>
-
-      <div className="anim-rise anim-delay-1 mt-7 flex flex-col gap-2.5">
-        {LOCALES.map((l) => {
-          const active = picked === l.code;
-          return (
-            <button
-              key={l.code}
-              type="button"
-              lang={l.code}
-              onClick={() => {
-                setPicked(l.code);
-                setLocale(l.code);
-              }}
-              aria-pressed={active}
-              className={cn(
-                "flex items-center justify-between rounded-tile border px-4 py-4 text-left transition",
-                active ? "border-ink bg-cream-deep" : "border-line bg-paper hover:bg-cream-deep/60",
-              )}
-            >
-              <span>
-                <span className="block text-lg font-medium text-ink">{l.native}</span>
-                <span className="block text-xs text-ink-mute">{l.english}</span>
-              </span>
-              {active && <Check className="size-5 text-ink" aria-hidden />}
-            </button>
-          );
-        })}
-      </div>
-
-      <Button size="lg" full className="anim-rise anim-delay-2 mt-6" onClick={onDone}>
-        {t("lang.continue")}
-      </Button>
+      <p className="anim-rise anim-delay-3 mt-6 text-center text-xs text-ink-mute">
+        Ceylo staff?{" "}
+        <Link href="/admin/login" className="underline underline-offset-2 hover:text-ink">
+          Sign in to the admin console
+        </Link>
+      </p>
     </div>
   );
 }

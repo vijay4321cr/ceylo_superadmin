@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check": "node --experimental-strip-types --no-warnings checks/srilanka.check.ts && node --experimental-strip-types --no-warnings checks/rbac.check.ts && node --experimental-strip-types --no-warnings checks/approvals.check.ts && node checks/settlement.check.mjs",
+    "check": "node --experimental-strip-types --no-warnings checks/srilanka.check.ts && node --experimental-strip-types --no-warnings checks/rbac.check.ts && node --experimental-strip-types --no-warnings checks/approvals.check.ts && node --experimental-strip-types --no-warnings checks/phone.check.ts && node checks/settlement.check.mjs",
     "api:smoke": "node checks/live-smoke.mjs"
   },
   "dependencies": {

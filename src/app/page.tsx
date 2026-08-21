@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Building2, ShieldCheck } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 /**
- * Front door. In production these are separate sub-domains
- * (`partner.ceylo.app` and `admin.ceylo.app`) so their sessions never cross —
- * this page only exists because the demo runs both from one origin.
+ * Front door. Each card says plainly whether there is a backend behind it, so
+ * nothing here looks more finished than it is.
  */
 export default function Home() {
   return (
@@ -17,31 +17,33 @@ export default function Home() {
 
         <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <Card
-            href="/onboarding"
-            icon={<Building2 className="size-5 text-coral" aria-hidden />}
-            title="Partner onboarding"
-            body="Apply to list your business. Sinhala, Tamil and English. Mobile-first."
-            cta="Start an application"
-          />
-
-          <Card
             href="/admin/login"
             icon={<ShieldCheck className="size-5 text-sky" aria-hidden />}
             title="Ceylo admin console"
-            body="Staff only. Review applications, run settlements, govern the marketplace."
+            body="Staff only. Sign in with a phone number that holds an admin role on the Ceylo backend."
             cta="Staff sign in"
-            delay="anim-delay-1"
+            tag="Live API"
           />
 
-          {/* The one live surface — everything else runs on the mock layer. */}
           <Card
             href="/admin/approvals"
             icon={<BadgeCheck className="size-5 text-ok" aria-hidden />}
             title="Partner approvals"
-            body="Approve partners who already registered and submitted KYC. Reads and writes the real CYLO backend."
+            body="Approve partners who already registered and submitted KYC. Reads and writes the real Ceylo backend."
             cta="Sign in and review requests"
-            delay="anim-delay-2"
+            delay="anim-delay-1"
             tag="Live API"
+          />
+
+          <Card
+            href="/onboarding"
+            icon={<Building2 className="size-5 text-ink-faint" aria-hidden />}
+            title="Partner onboarding"
+            body="The applicant wizard is built — trilingual, mobile-first — but there is no partner application endpoint yet, so applications are not open."
+            cta="See what is missing"
+            delay="anim-delay-2"
+            tag="Coming soon"
+            muted
           />
         </div>
 
@@ -63,6 +65,7 @@ function Card({
   cta,
   delay,
   tag,
+  muted,
 }: {
   href: string;
   icon: React.ReactNode;
@@ -71,21 +74,34 @@ function Card({
   cta: string;
   delay?: string;
   tag?: string;
+  /** Nothing behind it yet — say so rather than let it look ready. */
+  muted?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={`anim-rise ${delay ?? ""} group flex flex-col rounded-tile border border-line bg-paper p-5 shadow-tile transition hover:border-ink`}
+      className={cn(
+        "anim-rise group flex flex-col rounded-tile border bg-paper p-5 shadow-tile transition hover:border-ink",
+        muted ? "border-dashed border-line" : "border-line",
+        delay,
+      )}
     >
       <span className="flex items-center gap-2">
         {icon}
         {tag && (
-          <span className="ml-auto rounded-chip bg-ok-tint px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-ink">
+          <span
+            className={cn(
+              "ml-auto rounded-chip px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+              muted ? "bg-sand text-ink-mute" : "bg-ok-tint text-ink",
+            )}
+          >
             {tag}
           </span>
         )}
       </span>
-      <p className="mt-3 font-display text-base font-semibold">{title}</p>
+      <p className={cn("mt-3 font-display text-base font-semibold", muted && "text-ink-soft")}>
+        {title}
+      </p>
       <p className="mt-1 flex-1 text-xs leading-relaxed text-ink-mute">{body}</p>
       <span className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-ink">
         {cta}
