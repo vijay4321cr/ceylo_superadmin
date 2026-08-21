@@ -116,23 +116,11 @@ export default function OverviewPage() {
             title="Nothing to show yet"
             subtitle="The overview endpoint returned no numeric figures."
           />
-          <p className="text-[12px] text-ink-mute">
-            This console shows only what the backend reports. As
-            <code className="mx-1 font-mono">GET /admin/analytics/overview</code>
-            grows, the tiles here appear automatically.
+          <p className="text-[12px] leading-relaxed text-ink-mute">
+            This console shows only what the backend reports, and it has no figures for you right
+            now. Tiles appear here on their own as the backend starts returning them.
           </p>
         </Tile>
-      )}
-
-      {settled.overview && (
-        <details className="rounded-tile border border-line bg-paper">
-          <summary className="cursor-pointer px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-ink-mute">
-            Raw overview response
-          </summary>
-          <pre className="scroll-thin max-h-72 overflow-auto border-t border-line-soft p-3 font-mono text-[11px] leading-relaxed text-ink-soft">
-            {JSON.stringify(settled.overview, null, 2)}
-          </pre>
-        </details>
       )}
     </>
   );

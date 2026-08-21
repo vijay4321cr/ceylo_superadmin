@@ -455,18 +455,6 @@ export default function PartnerApprovalsPage() {
                 <DocLink label="Cancelled cheque" href={open.kyc.cancelledChequeUrl} />
               </div>
             </Tile>
-
-            {/* The collection pins down the request shapes, not the response.
-                Showing the raw object means an operator can always see the
-                truth rather than only the fields this UI happens to map. */}
-            <details className="rounded-tile border border-line bg-paper">
-              <summary className="cursor-pointer px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-ink-mute">
-                Raw API response
-              </summary>
-              <pre className="scroll-thin max-h-64 overflow-auto border-t border-line-soft p-3 font-mono text-[11px] leading-relaxed text-ink-soft">
-                {JSON.stringify(open.raw, null, 2)}
-              </pre>
-            </details>
           </div>
         )}
       </Modal>

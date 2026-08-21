@@ -170,14 +170,7 @@ export default function EventModerationPage() {
                     {row.category && <span>· {row.category}</span>}
                     {row.startAt && <span>· starts {dateTime(row.startAt)}</span>}
                   </p>
-                  <details className="mt-2">
-                    <summary className="cursor-pointer text-[10px] uppercase tracking-wide text-ink-faint">
-                      Raw
-                    </summary>
-                    <pre className="scroll-thin mt-1 max-h-48 overflow-auto rounded-md border border-line-soft p-2 font-mono text-[10px] text-ink-soft">
-                      {JSON.stringify(row.raw, null, 2)}
-                    </pre>
-                  </details>
+
                 </div>
 
                 {canDecide && row.status.toUpperCase().includes("PENDING") && (

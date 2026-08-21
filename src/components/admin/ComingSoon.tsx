@@ -1,56 +1,81 @@
 "use client";
 
-import { Construction, Plug } from "lucide-react";
+import { Clock } from "lucide-react";
 import { PageHead } from "@/components/admin/StaffShell";
 
 /**
- * Shown wherever the UI exists but the API does not.
+ * Shown wherever the screen exists but its data does not yet.
  *
- * This console deliberately displays **no invented data**. A screen with no
- * endpoint behind it says so and lists what the backend would need to expose,
- * so the gap is a work item rather than a mystery.
+ * It renders the shape of the screen — stat tiles, a filter bar, table rows —
+ * greyed out behind a plain "Coming soon" message, so you can see what will be
+ * here without being shown a single fabricated figure. The placeholders are
+ * obviously placeholders: bars, not numbers.
+ *
+ * The endpoints each screen needs are recorded in a comment at the top of the
+ * page file rather than on screen — that is a note for whoever builds the API,
+ * not something an operator should have to read.
  */
 export function ComingSoon({
   title,
   subtitle,
   purpose,
-  endpoints,
 }: {
   title: string;
   subtitle?: string;
-  /** One line on what this screen is for once it is connected. */
+  /** One line, in plain language, on what this screen will do. */
   purpose: string;
-  /** The endpoints this screen needs, written as they would be called. */
-  endpoints: string[];
 }) {
   return (
     <>
       <PageHead title={title} subtitle={subtitle} />
 
-      <div className="mx-auto max-w-xl rounded-tile border border-line bg-paper p-6 shadow-tile">
-        <span className="inline-flex size-10 items-center justify-center rounded-full bg-peach-tint">
-          <Construction className="size-5 text-peach" aria-hidden />
-        </span>
-
-        <h2 className="mt-3 font-display text-base font-semibold text-ink">Not connected yet</h2>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">{purpose}</p>
-        <p className="mt-2 text-[12px] leading-relaxed text-ink-mute">
-          The Ceylo backend does not expose an endpoint for this yet, so there is nothing real to
-          show. Rather than fill the screen with sample figures, it stays empty until the API lands.
-        </p>
-
-        <div className="mt-4 rounded-tile border border-line bg-sand-soft/60 p-3">
-          <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-ink-mute">
-            <Plug className="size-3" aria-hidden />
-            Needs from the API
-          </p>
-          <ul className="mt-2 flex flex-col gap-1">
-            {endpoints.map((e) => (
-              <li key={e} className="font-mono text-[11px] text-ink-soft">
-                {e}
-              </li>
+      <div className="relative overflow-hidden rounded-tile border border-line bg-paper">
+        {/* The shape of the screen, deliberately empty. */}
+        <div aria-hidden className="pointer-events-none select-none p-4 opacity-35 blur-[1px]">
+          <div className="mb-4 grid gap-3 sm:grid-cols-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="rounded-tile border border-line p-4">
+                <div className="h-2 w-20 rounded-chip bg-sand" />
+                <div className="mt-2.5 h-5 w-16 rounded-chip bg-sand-soft" />
+              </div>
             ))}
-          </ul>
+          </div>
+
+          <div className="mb-3 flex gap-2 rounded-tile border border-line p-3">
+            <div className="h-7 w-40 rounded-chip bg-sand-soft" />
+            <div className="h-7 w-28 rounded-chip bg-sand-soft" />
+            <div className="h-7 w-28 rounded-chip bg-sand-soft" />
+          </div>
+
+          <div className="rounded-tile border border-line">
+            <div className="flex gap-4 border-b border-line bg-sand-soft/60 px-3 py-2">
+              {[24, 16, 20, 12].map((w, i) => (
+                <div key={i} className="h-2 rounded-chip bg-sand" style={{ width: `${w * 4}px` }} />
+              ))}
+            </div>
+            {[0, 1, 2, 3, 4].map((r) => (
+              <div key={r} className="flex items-center gap-4 border-b border-line-soft px-3 py-3">
+                {[28, 18, 22, 14].map((w, i) => (
+                  <div
+                    key={i}
+                    className="h-2.5 rounded-chip bg-sand-soft"
+                    style={{ width: `${w * 4}px` }}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* The message that actually matters. */}
+        <div className="absolute inset-0 grid place-items-center bg-paper/70 px-6">
+          <div className="max-w-sm text-center">
+            <span className="inline-flex size-10 items-center justify-center rounded-full bg-sand">
+              <Clock className="size-5 text-ink-mute" aria-hidden />
+            </span>
+            <p className="mt-3 font-display text-base font-semibold text-ink">Coming soon</p>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-ink-soft">{purpose}</p>
+          </div>
         </div>
       </div>
     </>
