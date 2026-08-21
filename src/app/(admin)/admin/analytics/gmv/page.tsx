@@ -7,5 +7,12 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   GET /admin/analytics/gmv
  */
 export default function Page() {
-  return <ComingSoon title="GMV" purpose="Gross merchandise value by month, vertical and district." />;
+  return (
+    <ComingSoon
+      title="GMV"
+      subtitle="Gross merchandise value by month, vertical and district."
+      purpose="Track GMV across the marketplace."
+      stats={["This month","Dining","Ferries","Events"]}
+    />
+  );
 }

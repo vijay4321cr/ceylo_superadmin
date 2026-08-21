@@ -9,5 +9,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/listings/:id/reject
  */
 export default function Page() {
-  return <ComingSoon title="Listing moderation" purpose="Review partner changes to listings — photos, prices, descriptions, routes — before customers see them." />;
+  return (
+    <ComingSoon
+      title="Listing moderation"
+      subtitle="Partner changes to what customers see, before they go live."
+      purpose="Review listing changes — photos, prices, descriptions, routes."
+      filters={[{"label":"Status","options":["Pending"]}]}
+      columns={["Listing","Partner","Summary","Submitted","Status",""]}
+    />
+  );
 }

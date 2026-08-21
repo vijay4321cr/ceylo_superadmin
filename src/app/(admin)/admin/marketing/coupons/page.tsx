@@ -9,5 +9,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   PATCH /admin/coupons/:id
  */
 export default function Page() {
-  return <ComingSoon title="Coupons" purpose="Create and manage platform-funded discount codes." />;
+  return (
+    <ComingSoon
+      title="Coupons"
+      subtitle="Platform-wide discounts. Ceylo funds these, not the partner."
+      purpose="Create and manage platform-funded discount codes."
+      actionLabel="New coupon"
+      columns={["Code","Discount","Min spend","Vertical","Used","Runs","Status",""]}
+    />
+  );
 }

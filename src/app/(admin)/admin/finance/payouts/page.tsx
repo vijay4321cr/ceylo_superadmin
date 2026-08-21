@@ -9,5 +9,14 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/finance/payouts/:id/retry
  */
 export default function Page() {
-  return <ComingSoon title="Payouts" purpose="Track payout batches, capture the bank transfer reference, and retry failures." />;
+  return (
+    <ComingSoon
+      title="Payouts"
+      subtitle="Bank transfers out. Capture the reference against every payment."
+      purpose="Track payout batches, record transfer references, and retry failures."
+      stats={["Queued","Failed","Paid this view"]}
+      filters={[{"label":"Status","options":["All"]}]}
+      columns={["Partner","Amount","Status","Reference","Created",""]}
+    />
+  );
 }

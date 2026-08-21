@@ -7,5 +7,12 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   GET /admin/analytics/cohorts
  */
 export default function Page() {
-  return <ComingSoon title="Partner cohorts" purpose="Retention by joining month." />;
+  return (
+    <ComingSoon
+      title="Partner cohorts"
+      subtitle="Partners still transacting N months after joining."
+      purpose="See retention by joining month."
+      columns={["Cohort","Partners","M0","M1","M2","M3"]}
+    />
+  );
 }

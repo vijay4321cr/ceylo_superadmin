@@ -7,5 +7,12 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   GET /admin/catalog/districts
  */
 export default function Page() {
-  return <ComingSoon title="Districts" purpose="Coverage and performance per district, used to route applications to the right queue." />;
+  return (
+    <ComingSoon
+      title="Districts"
+      subtitle="All 25 districts, and what each is worth to the marketplace."
+      purpose="See coverage and performance per district."
+      columns={["District","Province","Partners","Live","Applications","GMV"]}
+    />
+  );
 }

@@ -9,5 +9,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   GET /admin/segments
  */
 export default function Page() {
-  return <ComingSoon title="Campaigns" purpose="Build and send push, SMS and email campaigns to an audience segment." />;
+  return (
+    <ComingSoon
+      title="Campaigns"
+      subtitle="Push, SMS and email. No WhatsApp."
+      purpose="Build and send campaigns to an audience segment."
+      actionLabel="New campaign"
+      columns={["Campaign","Channels","Audience","Open rate","Sent / scheduled","Status"]}
+    />
+  );
 }

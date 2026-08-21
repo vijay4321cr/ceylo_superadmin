@@ -8,5 +8,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   PUT /admin/finance/commissions
  */
 export default function Page() {
-  return <ComingSoon title="Commissions & fees" purpose="Set commission, convenience fee, settlement cycle and WHT per partner, category or district." />;
+  return (
+    <ComingSoon
+      title="Commissions & fees"
+      subtitle="Partner overrides beat category rates, which beat district rates."
+      purpose="Set commission, convenience fee, settlement cycle and WHT per partner, category or district."
+      actionLabel="New rate"
+      columns={["Applies to","Commission","Convenience fee","Cycle","WHT","Net on Rs 10,000","Updated"]}
+    />
+  );
 }

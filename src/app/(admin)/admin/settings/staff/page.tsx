@@ -9,5 +9,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   PATCH /admin/staff/:id
  */
 export default function Page() {
-  return <ComingSoon title="Staff" purpose="Invite console users, assign roles and disable accounts." />;
+  return (
+    <ComingSoon
+      title="Staff"
+      subtitle="Console accounts and what they can reach."
+      purpose="Invite console users, assign roles and disable accounts."
+      actionLabel="Invite someone"
+      columns={["Person","Role","Status","Last active",""]}
+    />
+  );
 }

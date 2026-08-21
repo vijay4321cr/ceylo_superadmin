@@ -8,5 +8,14 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/fraud/signals/:id/action
  */
 export default function Page() {
-  return <ComingSoon title="Fraud signals" purpose="Review duplicate accounts, velocity spikes and scalper detection with the evidence behind each." />;
+  return (
+    <ComingSoon
+      title="Fraud signals"
+      subtitle="Each signal carries the evidence that triggered it."
+      purpose="Review duplicate accounts, velocity spikes and scalper detection."
+      stats={["Open signals","High severity","In this view"]}
+      filters={[{"label":"Status","options":["Open"]}]}
+      columns={["Signal","Subject","Severity","Detected","Status",""]}
+    />
+  );
 }

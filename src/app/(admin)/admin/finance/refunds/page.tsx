@@ -9,5 +9,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/refunds/:id/reject
  */
 export default function Page() {
-  return <ComingSoon title="Refunds" purpose="Review and decide customer refund requests within role limits." />;
+  return (
+    <ComingSoon
+      title="Refunds"
+      subtitle="Customer refunds awaiting a decision."
+      purpose="Review and decide refund requests, within the limits your role allows."
+      filters={[{"label":"Status","options":["All"]}]}
+      columns={["Booking","Partner","Reason","Amount","Status","Requested",""]}
+    />
+  );
 }

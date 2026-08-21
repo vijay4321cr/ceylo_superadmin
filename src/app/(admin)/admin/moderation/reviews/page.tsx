@@ -9,5 +9,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/reviews/:id/reject
  */
 export default function Page() {
-  return <ComingSoon title="Review moderation" purpose="Handle customer reviews reported by partners or flagged automatically." />;
+  return (
+    <ComingSoon
+      title="Review moderation"
+      subtitle="Customer reviews reported by partners or caught by the filter."
+      purpose="Decide on reported and auto-flagged customer reviews."
+      filters={[{"label":"Status","options":["Pending"]}]}
+      columns={["Review","Partner","Rating","Submitted","Status",""]}
+    />
+  );
 }

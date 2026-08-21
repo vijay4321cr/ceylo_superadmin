@@ -9,5 +9,15 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/finance/settlements/:id/approve
  */
 export default function Page() {
-  return <ComingSoon title="Settlements" purpose="Generate and approve settlement runs — gross, commission, WHT and net payable per partner." />;
+  return (
+    <ComingSoon
+      title="Settlements"
+      subtitle="gross − commission + WHT = net payable, matching what the partner sees."
+      purpose="Generate and approve settlement runs per partner."
+      actionLabel="Generate run"
+      stats={["Drafts awaiting approval","Approved, not yet paid","Total net this view"]}
+      filters={[{"label":"Status","options":["All"]}]}
+      columns={["Partner","Period","Cycle","Gross","Commission","WHT","Net payable","Status"]}
+    />
+  );
 }

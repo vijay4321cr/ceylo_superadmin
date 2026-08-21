@@ -8,5 +8,12 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/banners
  */
 export default function Page() {
-  return <ComingSoon title="Banners" purpose="Schedule promotional placements across the consumer app and track their performance." />;
+  return (
+    <ComingSoon
+      title="Banners"
+      subtitle="Promotional placements across the consumer app."
+      purpose="Schedule promotional placements and track how they perform."
+      columns={["Banner","Placement","Vertical","Runs","Impressions","CTR","Status"]}
+    />
+  );
 }

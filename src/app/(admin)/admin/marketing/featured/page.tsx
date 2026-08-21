@@ -8,5 +8,13 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   POST /admin/featured
  */
 export default function Page() {
-  return <ComingSoon title="Featured slots" purpose="Sell and schedule monetised placement slots for partners." />;
+  return (
+    <ComingSoon
+      title="Featured slots"
+      subtitle="Monetised placements. Partners pay for these, so they are revenue."
+      purpose="Sell and schedule paid placement slots for partners."
+      stats={["Active slots","Booked revenue","Live now"]}
+      columns={["Partner","Slot","Vertical","District","Runs","Price","Status"]}
+    />
+  );
 }

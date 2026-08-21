@@ -7,5 +7,11 @@ import { ComingSoon } from "@/components/admin/ComingSoon";
  *   GET /admin/catalog/categories
  */
 export default function Page() {
-  return <ComingSoon title="Categories & vocabularies" purpose="The controlled lists behind search, filters and partner setup." />;
+  return (
+    <ComingSoon
+      title="Categories & vocabularies"
+      subtitle="The shared lists behind search, filters and partner setup."
+      purpose="Manage cuisines, event categories, ports and occasions."
+    />
+  );
 }
